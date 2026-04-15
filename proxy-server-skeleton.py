@@ -43,9 +43,7 @@ while True:
             print(hostn.decode())
             try:
                 # Connect to the socket to port 80
-                
-                # Fill in start
-                # Fill in end
+                c.connect((hostn.decode(), 80))
                 # Create a temporary file on this socket and ask port 80 for the file requested by the client
                 request = "GET / HTTP/1.1\r\nHost: {}\r\n\r\n".format(hostn.decode())
                 c.sendall(request.encode())
