@@ -1,3 +1,5 @@
+# Made by: Diego Corsino & Danny Zakariya
+
 import sys
 from socket import *
 
