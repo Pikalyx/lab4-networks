@@ -49,11 +49,20 @@ while True:
                 c.sendall(request.encode())
                 # Read the response into buffer
                 # Fill in start
+                buffer = b""
+                while True:
+                    data = c.recv(4096)
+                    if not data:
+                        break
+                    buffer += data
                 # Fill in end
-                # Create a new file in the cache for the requested file. 
+                # Create a new file in the cache for the requested file.
                 # Also send the response in the buffer to client socket and the corresponding file in the cache
                 with open(b"./" + filename, "wb") as tmpFile:
                     # Fill in start
+                    tmpFile.write(buffer)
+                    tcpCliSock.sendall(buffer)
+                    c.close()
                     # Fill in end
             except Exception as e:
                 print("Illegal request:", e)
@@ -61,8 +70,10 @@ while True:
         else:
             # HTTP response message for file not found
             # Fill in start
+            tcpCliSock.send(b"HTTP/1.1 404 Not Found\r\n")
+            tcpCliSock.send(b"Content-Type:text/html\r\n\r\n")
+            tcpCliSock.send(b"<html><body><h1>404 Not Found</h1></body></html>")
             # Fill inend
     # Close the client and the server sockets
     tcpCliSock.close()
 tcpSerSock.close()
-
