@@ -7,15 +7,15 @@ if len(sys.argv) <= 1:
 
 # Create a server socket, bind it to a port and start listening
 tcpSerSock = socket(AF_INET, SOCK_STREAM)
-# Fill in start
-# Fill in end
+tcpSerSock.bind((sys.argv[1], 8080))
+tcpSerSock.listen(1)
 
 while True:
     # Start receiving data from the client
     print('Ready to serve...')
     tcpCliSock, addr = tcpSerSock.accept()
     print('Received a connection from:', addr)
-    message = # Fill in start              # Fill in end
+    message = tcpCliSock.recv(4096)
     print(message)
     # Extract the filename from the given message
     filename = message.split()[1].partition("/")[2].encode()  # Encode the filename
@@ -32,14 +32,13 @@ while True:
             tcpCliSock.send(b"HTTP/1.1 200 OK\r\n")
             tcpCliSock.send(b"Content-Type:text/html\r\n")
             for line in outputdata:
-                # Fill in start
-                # Fill in end
+                tcpCliSock.send(line)
                 print('Read from cache')
     # Error handling for file not found in cache
     except IOError:
         if not fileExist:
             # Create a socket on the proxyserver
-            c = # Fill in start       # Fill in end
+            c = socket(AF_INET, SOCK_STREAM)
             hostn = filename.replace(b"www.", b"", 1)
             print(hostn.decode())
             try:
@@ -60,9 +59,9 @@ while True:
                     # Fill in end
             except Exception as e:
                 print("Illegal request:", e)
-               
+
         else:
-             # HTTP response message for file not found
+            # HTTP response message for file not found
             # Fill in start
             # Fill inend
     # Close the client and the server sockets
