@@ -2,7 +2,7 @@ import sys
 from socket import *
 
 if len(sys.argv) <= 1:
-    print('Usage : "python ProxyServer.py server_ip"\n[server_ip : It is the IP Address Of Proxy Server')
+    print('Usage : "python ProxyServer.py server_ip"\n[server_ip] : It is the IP Address Of Proxy Server')
     sys.exit(2)
 
 # Create a server socket, bind it to a port and start listening
@@ -18,7 +18,7 @@ while True:
     message = tcpCliSock.recv(4096)
     print(message)
     # Extract the filename from the given message
-    filename = message.split()[1].partition("/")[2].encode()  # Encode the filename
+    filename = message.split()[1].partition(b"/")[2]  # Extract filename
     print(filename)
     fileExist = False
     filetouse = b"/" + filename
